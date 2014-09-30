@@ -10,3 +10,7 @@ arma_server_admin_password: "changeme"
 #arma_server_enable_persistent: 0
 # 0 = lowest, 30 = highest
 #arma_server_voice_quality: 0
+
+# arma-mod role vars
+#arma_modpack_version: "2.0.1"
+

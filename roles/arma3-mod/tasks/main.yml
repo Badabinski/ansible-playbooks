@@ -1,0 +1,18 @@
+---
+- name: check if operating system is supported
+  assert: that="ansible_os_family =='RedHat'"
+
+- name: ensure download directory exists
+  file: path=/home/steam/Downloads state=directory owner=steam group=users
+  sudo: yes
+
+- name: download Arma modpack
+  get_url: url=https://s3.amazonaws.com/dharmab/arma/zaid-modpack-{{ arma_modpack_version }}.zip dest=/home/steam/Downloads/
+  sudo: yes
+  sudo_user: steam
+
+- name: install unzip
+  yum: name=unzip
+
+- name: extract Arma modpack
+  unarchive: copy=no src=/home/steam/Downloads/zaid-modpack-{{ arma_modpack_version }}.zip dest=/home/steam/arma3/

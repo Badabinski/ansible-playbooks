@@ -37,6 +37,7 @@
     - 2302/udp # Client
     - 2303/udp # Steam query
     - 2304/udp # Steam master
+    - 2305/udp # VON
   sudo: yes
   notify:
     - reload firewall

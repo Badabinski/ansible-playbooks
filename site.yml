@@ -2,6 +2,7 @@
 - include: csgoserver.yml
 - include: tf2server.yml
 - include: arma3server.yml
+- include: arma3-mod.yml
 - include: development.yml
 - include: murmur.yml
 

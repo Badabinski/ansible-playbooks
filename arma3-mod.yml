@@ -1,0 +1,4 @@
+---
+- hosts: arma3-mod
+  roles:
+    - arma3-mod

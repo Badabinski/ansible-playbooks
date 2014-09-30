@@ -37,6 +37,7 @@
   async: 60
   poll: 5
   register: steam_login
+  ignore_errors: true
 
 - name: Stop if manual intervention required
   fail: msg="You must manually authorize this server with Steam Guard before ansible can continue. Log into the server manually and run 'sudo -u steam /home/steam/steamcmd/steamcmd.sh +login <steam username>.'"
