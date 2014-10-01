@@ -24,6 +24,8 @@ Provisions a server as an ArmA 3 Dedicated server.
 1. Start the server with `sudo -u steam ./arma3server -name=server -config=server.cfg`
 1. Detach from the screen or tmux session. You may now disconnect from the server.
 
+There is also an `arma3-mod` role which installs my personal mod pack on top of this role. You can use it as an example for automating your own mod setup.
+
 ## Murmur (Mumble Server)
 Supported OS: Debian 7.X x64
 
