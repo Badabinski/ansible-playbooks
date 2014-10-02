@@ -1,0 +1,51 @@
+---
+- name: Check if operating system is supported
+  assert: that="ansible_os_family == 'RedHat'"
+
+- name: check if directory server is installed
+  command: rpm -q 389-ds-base
+  ignore_errors: true
+  register: 389_ds_installed_check
+
+- name: Execute script if foo.rpm is not installed
+  command: somescript
+  when: rpm_check.stdout.find('is not installed') != -1
+
+- name: install 389 directory server
+  yum: name=389-ds-base
+  sudo: yes
+
+- name: reduce TCP keepalive timeout
+  sysctl: name=net.ipv4.tcp_keepalive_time value=900000
+  sudo: yes
+
+- name: increase file descriptor limit
+  sysctl: name=fs.file-max value=8192
+  sudo: yes
+
+- name: create ldap group
+  group: name="389ds"
+  sudo: yes
+
+- name: create ldap user
+  user: name="389ds"
+  sudo: yes
+
+- name: template install script options
+  template: src=setup.inf dest=/tmp/setup.inf
+  sudo: yes
+  when: 389_ds_installed_check|failed
+
+- name: run setup script
+  command: setup-ds.pl --silent -f /tmp/setup.inf
+  sudo: yes
+  when: 389_ds_installed_check|failed
+
+- name: open firewall ports
+firewalld: port={{ item }} permanent=true state=enabled
+with_items:
+- 389/tcp  # LDAP
+- 9830/tcp # admin intergace
+sudo: yes
+notify:
+- reload firewall

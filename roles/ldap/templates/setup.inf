@@ -1,0 +1,29 @@
+[General] 
+FullMachineName= {{ ldap_hostname }}.{{ ldap_domain }}.{{ ldap_domain_tld }}
+SuiteSpotUserID= nobody 
+SuiteSpotGroup= nobody 
+AdminDomain= {{ ldap_domain }}.{{ ldap_domain_tld }} 
+ConfigDirectoryAdminID= admin 
+ConfigDirectoryAdminPwd= admin 
+ConfigDirectoryLdapURL= ldap://{{ ldap_hostname }}.{{ ldap_domain }}.{{ ldap_domain_tld }}:25389/o={{ ldap_organization }} 
+
+[slapd] 
+SlapdConfigForMC= No 
+UseExistingMC= 1 
+UseExistingUG= No 
+ServerPort= 18257 
+ServerIdentifier= directory 
+Suffix= dc={{ ldap_domain }},dc={{ ldap_domain_tld }} 
+RootDN= cn=Directory Manager 
+UseReplication= No 
+AddSampleEntries= No 
+InstallLdifFile= suggest 
+AddOrgEntries= Yes 
+DisableSchemaChecking= No 
+RootDNPwd= admin123 
+
+[admin] 
+Port= 9830
+ServerIpAddress= 0.0.0.0
+ServerAdminID= admin 
+ServerAdminPwd= admin
