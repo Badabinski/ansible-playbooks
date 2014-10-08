@@ -7,12 +7,12 @@
   ignore_errors: true
   register: 389_ds_installed_check
 
-- name: Execute script if foo.rpm is not installed
-  command: somescript
-  when: rpm_check.stdout.find('is not installed') != -1
-
-- name: install 389 directory server
-  yum: name=389-ds-base
+- name: install packages
+  yum: name={{ item }}
+  with_items:
+    - 389-ds-base
+    - httpd
+    - phpldapadmin
   sudo: yes
 
 - name: reduce TCP keepalive timeout
@@ -24,11 +24,11 @@
   sudo: yes
 
 - name: create ldap group
-  group: name="389ds"
+  group: name="directory"
   sudo: yes
 
 - name: create ldap user
-  user: name="389ds"
+  user: name="directory"
   sudo: yes
 
 - name: template install script options
@@ -41,11 +41,17 @@
   sudo: yes
   when: 389_ds_installed_check|failed
 
+- name: start apache
+  service: name=httpd state=started enabled=yes
+  sudo: yes
+
 - name: open firewall ports
-firewalld: port={{ item }} permanent=true state=enabled
-with_items:
-- 389/tcp  # LDAP
-- 9830/tcp # admin intergace
-sudo: yes
-notify:
-- reload firewall
+  firewalld: port={{ item }} permanent=true state=enabled
+  with_items:
+    - 80/tcp
+    - 443/tcp
+    - 389/tcp  # LDAP
+    - 9830/tcp # admin intergace
+  sudo: yes
+  notify:
+    - reload firewall

@@ -1,0 +1,6 @@
+ldap_hostname: ldap
+ldap_domain: example
+ldap_domain_tld: com
+ldap_organization: Example Corporation
+ldap_admin_password: changeme
+ldap_directory_manager_password: changeme

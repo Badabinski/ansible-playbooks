@@ -1,29 +1,28 @@
 [General] 
-FullMachineName= {{ ldap_hostname }}.{{ ldap_domain }}.{{ ldap_domain_tld }}
-SuiteSpotUserID= nobody 
-SuiteSpotGroup= nobody 
-AdminDomain= {{ ldap_domain }}.{{ ldap_domain_tld }} 
-ConfigDirectoryAdminID= admin 
-ConfigDirectoryAdminPwd= admin 
-ConfigDirectoryLdapURL= ldap://{{ ldap_hostname }}.{{ ldap_domain }}.{{ ldap_domain_tld }}:25389/o={{ ldap_organization }} 
+{# Specifies the fully qualified domain name of the machine on which you are installing the server. The default is the local host name. The given hostname must be a fully-qualified domain name that can be resolved using gethostname() and then can be reverse-resolved by IP address back to the original hostname. If either name resolution attempt fails, then the setup script records a warning message in stdout and in the installation log. #}
+FullMachineName={{ ldap_hostname }}.{{ ldap_domain }}.{{ ldap_domain_tld }}
+{# Specifies the user name as which the Directory Server instance runs. This parameter does not apply to the user as which the Admin Server runs. The default is user nobody on Linux. This should be changed for most deployments. #}
+SuiteSpotUserID=directory 
+{# Specifies the group as which the servers will run. The default is group nobodyon Linux. This should be changed for most deployments. #}
+SuiteSpotGroup=directory 
+{# Specifies the administration domain under which this Directory Server instance is registered. #}
+AdminDomain={{ ldap_domain }}.{{ ldap_domain_tld }}
+{# Specifies the user ID of the user that has administration privileges to the configuration directory. #}
+ConfigDirectoryAdminID=admin 
+{# Specifies the password for the admin user. #}
+ConfigDirectoryAdminPwd={{ ldap_admin_password }} 
+{# Specifies the LDAP URL that is used to connect to your configuration directory. #}
+ConfigDirectoryLdapURL=ldap://{{ ldap_hostname }}.{{ ldap_domain }}.{{ ldap_domain_tld }}:389/o={{ ldap_organization }} 
 
 [slapd] 
-SlapdConfigForMC= No 
-UseExistingMC= 1 
-UseExistingUG= No 
-ServerPort= 18257 
-ServerIdentifier= directory 
-Suffix= dc={{ ldap_domain }},dc={{ ldap_domain_tld }} 
-RootDN= cn=Directory Manager 
-UseReplication= No 
-AddSampleEntries= No 
-InstallLdifFile= suggest 
-AddOrgEntries= Yes 
-DisableSchemaChecking= No 
-RootDNPwd= admin123 
+{# Specifies the port the server will use for LDAP connections. #}
+ServerPort=389 
+{# Specifies the suffix under which to store the directory data. #}
+Suffix=dc={{ ldap_domain }},dc={{ ldap_domain_tld }} 
+{# Specifies the distinguished name used by the Directory Manager. #}
+RootDN=cn=Directory Manager 
+{# Specifies the Directory Manager password. Do not use curly braces ({}) in the password. #}
+RootDNPwd={{ ldap_directory_manager_password }} 
 
 [admin] 
-Port= 9830
-ServerIpAddress= 0.0.0.0
-ServerAdminID= admin 
-ServerAdminPwd= admin
+SysUser=directory
