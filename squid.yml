@@ -1,0 +1,4 @@
+---
+- hosts: squid
+  roles:
+    - squid

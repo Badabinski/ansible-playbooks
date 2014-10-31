@@ -5,4 +5,4 @@
 - include: development.yml
 - include: murmur.yml
 - include: sync.yml
-
+- include: squid.yml
